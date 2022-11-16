@@ -1,0 +1,157 @@
+{% extends "venta/base_ventaB.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+<div class="row justify-content-center" style="padding-top:1em;">
+  <div class="col-10">
+    <div class="card text-center">
+
+      <div class="card-header">
+        <img src="../../../static/img/maupan.png" alt="MauPan" width="48" height="48">
+        {% for pedido in pedido_detail %}
+        Ticket de Pedido # {{ pedido.id }}
+
+      </div>
+      <div class="card-body">
+        <h5 class="card-title text-center">Detalles del Pedido</h5>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 col-md-6 text-center">
+              <p><b>Creación de pedido:</b></p>
+            </div>
+            <div class="col-sm-12 col-md-6 text-center">
+              {% if pedido.created.weekday == 0 %}
+              <p>Lunes {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 1%}
+              <p>Martes {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 2%}
+              <p>Miercoles {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 3%}
+              <p>Jueves {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 4%}
+              <p>Viernes {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 5%}
+              <p>Sabado {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 6%}
+              <p>Domingo {{ pedido.created }}</p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-1 text-center">
+              <p><b>Cajero: </b></p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center">
+              <p>{{ pedido.user.full_name }}</p>
+            </div>
+            <div class="col-sm-12 col-md-1 text-center">
+              <p><b>Cliente:</b> </p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-cente">
+              <p>{{ pedido.client.nickname }}</p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center bg-danger" style="--bs-bg-opacity: .2;">
+              <p><b>Fecha a entregar: </b></p>
+            </div>
+            <div class="col-sm-12 col-md-4 text-cente bg-danger" style="--bs-bg-opacity: .2;">
+              <p>{{ pedido.date_order }}</p>
+            </div>
+          </div>
+          <div class="row bg-danger" style="--bs-bg-opacity: .2;">
+            <div class="col-sm-12 col-md-2 text-center">
+              <p><b>Total: </b></p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center">
+              <p>$ {{ pedido.amount }}</p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center">
+              <p><b>A cuenta: </b></p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center">
+              <p>$ {{ pedido.pay_ammount }}</p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center">
+              <p><b>Por cobrar: </b></p>
+            </div>
+            <div class="col-sm-12 col-md-2 text-center">
+              <p>$ {{ pedido.pend_ammount }}</p>
+            </div>
+          </div>
+          {%if pedido.complete == True %}
+          <div class="row text-white bg-success bg-gradient" style="--bs-bg-opacity: .8;">
+            <div class="col-sm-12 col-md-6 text-center">
+              <p><b>Pedido entregado: </b></p>
+            </div>
+            <div class="col-sm-12 col-md-6 text-center">
+              {% if pedido.created.weekday == 0 %}
+              <p>Lunes {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 1%}
+              <p>Martes {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 2%}
+              <p>Miercoles {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 3%}
+              <p>Jueves {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 4%}
+              <p>Viernes {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 5%}
+              <p>Sabado {{ pedido.created }}</p>
+              {% elif pedido.created.weekday == 6%}
+              <p>Domingo {{ pedido.created }}</p>
+              {% endif %}
+            </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+          <div class="row">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Subtotal</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for producto in productos %}
+                <tr>
+                  <td>{{ producto.product.name}}</td>
+                  <td>{{ producto.count}}</td>
+                  <td>{{ producto.price_sale}}</td>
+                  <td>{{ producto.sub_total | floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  {% for venta in venta_detail %}
+                  <td></td>
+                  <td colspan="2" style=""><b>Total: </b></td>
+                  <td>{{ venta.amount }}</td>
+                  {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+
+        </div>
+        <a href="{% url 'orders_app:orders-list' %}" class="btn btn-dark">Regresar a las pedidos</a>
+      </div>
+
+      <div class="card-footer text-muted">
+        Panaderías MauPan
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+{% endblock panel-content %}
+
+{% block js %}
+
+{% endblock js %}

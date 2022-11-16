@@ -1,0 +1,82 @@
+{% extends "venta/base_ventaB.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+
+<div class="container">
+  <div class="col-sm-12 col-md-12 text-center">
+    <h4>Últimas ventas</h4>
+
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <a href="{% url 'venta_app:venta-index' id=user.id car_num='0' %}" class="btn btn-dark" style="width:80%;">
+        Venta
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-10">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th colspan="2">Fecha</th>
+            <th scope="col"># de productos</th>
+            <th scope="col">Monto </th>
+            <th scope="col">Anular </th>
+            <th scope="col">Ticket </th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          {% for venta in ventas %}
+          <tr>
+            <th scope="row">{{venta.id}}</th>
+            <td colspan="2">{{venta.date_sale}}</td>
+            <td>{{venta.count}}</td>
+            <td>${{venta.amount}}</td>
+            <td>
+              <a href="{% url 'venta_app:venta-delete' venta.id %}" class="button alert">
+                <img src="../../../static/img/ionicons/close.svg" alt="Bootstrap" width="32" height="32" style="background:#EC1313;">
+              </a>
+            </td>
+            <td>
+              <a href="{% url 'venta_app:venta-ticket' venta.id %}" class="button secondary">
+                <img src="../../../static/img/ionicons/today.svg" alt="Bootstrap" width="32" height="32" style="">              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+
+      </div>
+      <div class="col-sm-12 col-md-9 center-block" style="">
+        {% if is_paginated %}
+        <nav aria-label="...">
+          <ul class="pagination pagination-lg">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a href="?page={{ page_obj.previous_page_number}}" class="page-link">Ant</a>
+            </li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %} active {% endif %}">
+              <a href="?page={{ i }}" class="page-link" href="#">{{ i }}</a>
+            </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+              <a href="?page={{ page_obj.next_page_number }}" class="page-link">Sig>></a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+
+    </div>
+
+{% endblock panel-content %}

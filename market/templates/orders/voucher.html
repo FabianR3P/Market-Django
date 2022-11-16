@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+    <style rel="stylesheet">
+      h3 {
+        font-size: 20px;
+      }
+      img{
+        width: auto;
+        height: 100px;
+      }
+      table{
+        border: 1px black;
+      }
+    </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td><img src="../static/img/maupan.jpeg" alt=""></td>
+      <td><h3>MauPan Pedidos</h3></td>
+    </tr>
+  </table>
+    <table>
+        <tr>
+            <td>N&#176; de pedido</td><td>{{venta.id}}</td>
+            <td>Fecha:</td><td>{{venta.date_sale}}</td>
+        </tr>
+        <tr>
+            <td>Cantidad de Productos:</td><td>{{venta.count}}</td>
+            <td>Monto Total:</td><td>{{venta.amount}}</td>
+        </tr>
+        <tr>
+          <td>Monto Apartado:</td><td>$100</td>
+          <td>Monto por cobrar:</td><td>$39</td>
+        </tr>
+        <tr>
+            <td>Tipo de Pago:</td><td>{{venta.get_type_invoce_display}}</td>
+        </tr>
+    </table>
+
+    <h4>Poductos encargados:</h4>
+    <ul>
+      <table>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+        </tr>
+        {% for producto in detalle_productos %}
+            <tr>
+              <td style="text-align:center">{{ producto.product.name }}</td>
+              <td style="text-align:center">{{ producto.count }}</td>
+              <td style="text-align:center">{{ producto.price_sale}}</td>
+            </tr>
+            {% endfor %}
+
+          </table>
+    </ul>
+</body>
+</html>

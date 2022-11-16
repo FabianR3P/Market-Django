@@ -1,0 +1,74 @@
+{% extends "orders/base_order.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+<div class="container-fluid"
+<div class="row">
+  <div class="col-sm-12 d-flex justify-content-center">
+    <h1 style="">Menu de Pedidos MauPan</h1>
+  </div>
+  <div class="row m-3">
+    <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a href="{% url 'orders_app:orders-list-today' %}" class="btn btn-outline-success" type="button" style="font-size: 1.5rem; height:4.5rem;">Pedidos del día</a>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a href="{% url 'orders_app:orders-list' %}" class="btn btn-outline-danger" type="button" style="font-size: 1.5rem; height:4.5rem;">Pedidos Proximos</a>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a href="{% url 'orders_app:orders-end' %}" class="btn btn-outline-primary" type="button" style="font-size: 1.5rem; height:4.5rem;">Pedidos Entregados</a>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a class="btn btn-outline-primary" type="button" style="font-size: 1.5rem; height:4.5rem;">Historial de pedidos</a>
+      </div>
+    </div>
+  </div>
+  <div class="row m-3">
+    <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a href="{% url 'orders_app:orders-list' %}" class="btn btn-outline-success" type="button" style="font-size: 1.5rem; height:4.5rem;">Producción para la noche</a>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a class="btn btn-outline-danger" type="button" style="font-size: 1.5rem; height:4.5rem;">Produccion para la tarde</a>
+      </div>
+    </div>
+      <div class="col-sm-12 col-md-3 mt-3">
+      <div class="d-grid gap-2">
+        <a href="{% url 'venta_app:venta-index' id=user.id car_num='0' %}" class="btn btn-outline-dark" type="button" style="font-size: 1.5rem; height:4.5rem;">Vover a vender</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row justify-content-center m-3">
+    <div class="col-sm-12 col-md-12 d-flex justify-content-center">
+      <h3>Clientes</h3>
+    </div>
+    {% for cliente in clientes %}
+    <div class="col-sm-12 col-md-1 text-center" style="padding-top:10px;">
+      <a href="{% url 'orders_app:orders-car' cliente.id  %}">
+      <div class="card text-bg-light text-center" style="width: 7.3rem; height:7rem;" >
+        <img src="../../static/img/ionicons/person-outline.svg" class="card-img-top" alt="..."  width="40" height="40">
+        <div class="card-body">
+          <p class="card-text">{{ cliente.nickname }}</p>
+
+        </div>
+      </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+
+{% endblock panel-content %}

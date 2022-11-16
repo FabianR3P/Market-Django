@@ -1,0 +1,96 @@
+{% extends "orders/base_order.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<div class="container">
+  <div class="row" style="padding-top:.5em;">
+    <div class="col-sm-12 col-md-12">
+      <div class="card text-center">
+      <div class="card-header">
+        <h3>Dato de producción del día siguiente:
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div></h3>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Actualizado el : <b>{{ now }}</b> </h5>
+        <div class="row">
+          {% for producto in produce %}
+          <div class="col-sm-12 col-md-3">
+            <ol class="list-group ">
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Por hacer: </div>
+                  {{ producto.product.name }}
+                </div>
+                <span class="badge bg-primary rounded-pill" style="font-size:20px;">{{ producto.count }}</span>
+              </li>
+            </ol>
+          </div>
+          {% endfor %}
+
+        </div>
+        <p class="card-text"></p>
+        <form action="{% url  'orders_app:orders-cerrar' %}" method="POST">{% csrf_token %}
+          <button type="submit" class="btn btn-primary" style="">Cerrar dato</button>
+        </form>
+      </div>
+      <div class="card-footer text-muted">
+        Pan a elaborar.
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+
+  </div>
+
+    <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Migajon', 'Reposteria', 'Mostrador', 'Variedad', 'Peineta', 'Bolillo'],
+            datasets: [{
+                label: '# de piezas',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+
+</div>
+
+
+{% endblock panel-content %}

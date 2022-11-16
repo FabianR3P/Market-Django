@@ -1,0 +1,117 @@
+{% extends "orders/base_order.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+  <div class="container" style="padding-top:.5rem;">
+    <div class="row m-3">
+          <div class="col-sm-12 col-md-2 mt-2">
+            <div class="d-grid gap-2">
+              <a href="{% url 'orders_app:orders-list-today' %}" class="btn btn-outline-success" type="button" style="font-size: 1rem; height:2.4rem;">Pedidos del día</a>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 mt-2">
+            <div class="d-grid gap-2">
+              <a href="{% url 'orders_app:orders-list' %}" class="btn btn-outline-danger" type="button" style="font-size: 1rem; height:2.4rem;">Pedidos Proximos</a>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 mt-2">
+            <div class="d-grid gap-2">
+              <a href="{% url 'orders_app:orders-end' %}" class="btn btn-outline-primary" type="button" style="font-size: 1rem; height:2.4rem;">Pedidos Entregados</a>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 mt-2">
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary" type="button" style="font-size: 1rem; height:2.4rem;">Historial de pedidos</button>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 mt-2">
+            <div class="d-grid gap-2">
+              <a href="{% url 'venta_app:venta-index' id=user.id car_num='0' %}" class="btn btn-outline-dark" type="button" style="font-size: 1rem; height:2.4rem;">Volver a vender</a>
+            </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-center" >
+      <div class="col-sm-12 col-md-12">
+        <table class="table">
+          <thead>
+            <tr align="center">
+              <th scope="col">#</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Cajero</th>
+              <th scope="col">Total</th>
+              <th scope="col">A cuenta</th>
+              <th scope="col">Restante</th>
+              <th scope="col">Ver</th>
+              <th scope="col">Entregar</th>
+              <th scope="col">Editar</th>
+              <th scope="col">Elimina</th>
+              <th scope="col">Entrega</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pedido in pedidos %}
+                {% if pedido.day_night == True %}
+                <tr class="table-primary" >
+                {% else %}
+                <tr class="table-warning" >
+                {% endif %}
+              <th scope="row" align="center">{{ pedido.id }}</th>
+              <td align="center">{{ pedido.client.name }}</td>
+              <td align="center">{{ pedido.user.full_name }}</td>
+              <td align="center" >{{ pedido.amount }}</td>
+              <td align="center" >{{ pedido.pay_ammount }}</td>
+              {% if pedido.amount == pedido.pay_ammount %}
+                <td align="center">{{ pedido.pend_ammount }}</td>
+              {% else %}
+                <td class="table-danger" align="center">{{ pedido.pend_ammount }}</td>
+              {% endif %}
+              <td align="center">
+                <a href="{% url 'orders_app:orders-view' pedido.id %}" class="button alert"><i class="fi-x">
+                  <img src="../../../static/img/ionicons/eye-outline.svg" alt="Bootstrap" width="32" height="32" style=""><span class="ms-1 d-none d-sm-inline"></span>
+                </a>
+              </td>
+              <td align="center">
+                <a href="{% url 'orders_app:orders-finish' pedido.id pedido.client.id %}" class="button alert"><i class="fi-x">
+                  <img src="../../../static/img/ionicons/golf-outline.svg" alt="Bootstrap" width="32" height="32" style=""><span class="ms-1 d-none d-sm-inline"></span>
+                </a>
+              </td>
+              <td align="center">
+                <a href="" class="button alert"><i class="fi-x">
+                  <img src="../../../static/img/ionicons/create-outline.svg" alt="Bootstrap" width="32" height="32" style=""><span class="ms-1 d-none d-sm-inline"></span>
+                </a>
+              </td>
+              <td align="center">
+                <a href="" class="button alert"><i class="fi-x">
+                  <img src="../../../static/img/ionicons/trash-outline.svg" alt="Bootstrap" width="32" height="32" style=""><span class="ms-1 d-none d-sm-inline"></span>
+                </a>
+              </td>
+                 <th>{% if pedido.date_order.isoweekday == 1 %}
+                  <p>Lunes {{ pedido.date_order }}</p>
+                  {% elif pedido.date_order.isoweekday == 2 %}
+                  <p>Martes {{ pedido.date_order }}</p>
+                  {% elif pedido.date_order.isoweekday == 3 %}
+                  <p>Miercoles {{ pedido.date_order }}</p>
+                  {% elif pedido.date_order.isoweekday == 4 %}
+                  <p>Jueves {{ pedido.date_order }}</p>
+                  {% elif pedido.date_order.isoweekday == 5 %}
+                  <p>Viernes {{ pedido.date_order }}</p>
+                  {% elif pedido.date_order.isoweekday == 6 %}
+                  <p>Sabado {{ pedido.date_order }}</p>
+                  {% elif pedido.date_order.isoweekday == 7 %}
+                  <p>Domingo {{ pedido.date_order }}</p>
+                  {% endif %}</th>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+
+
+{% endblock panel-content %}

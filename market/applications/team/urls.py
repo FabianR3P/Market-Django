@@ -1,0 +1,56 @@
+#
+from django.urls import path
+from . import views
+app_name = "team_app"
+urlpatterns = [
+    path(
+        'team/index/<id>/<car_num>/<user_team>',
+        views.AddCarView.as_view(),
+        name='team-index',
+    ),
+    path(
+        'carshop_team/update/<pk>/<id_user>/<car_num>/<user_team>',
+        views.CarShopUpdateView.as_view(),
+        name='carshop-update-team',
+    ),
+    path(
+        'carshop_team/updatePlus/<pk>/<id_user>/<car_num>/<user_team>',
+        views.CarShopUpdatePlusView.as_view(),
+        name='carshop-updatePlus-team',
+    ),
+    path(
+        'carshop_team/delete/<pk>/<id_user>/<car_num>/<user_team>',
+        views.CarShopDeleteView.as_view(),
+        name='carshop-delete-team',
+    ),
+    path(
+        'carshop_team/delete-all/<id_user>/<car_num>/<user_team>',
+        views.CarShopDeleteAll.as_view(),
+        name='carshop-delete_all-team',
+    ),
+    path(
+        'team/simple/<id_user>/<car_num>/<user_team>',
+        views.ProcesoVentaSimpleView.as_view(),
+        name='team-simple',
+    ),
+    path(
+        'team/voucher/',
+        views.ProcesoVentaVoucherView.as_view(),
+        name='team-voucher',
+    ),
+    path(
+        'venta_team/voucher-pdf/<pk>/',
+        views.VentaVoucherPdf.as_view(),
+        name='team-voucher_pdf',
+    ),
+    path(
+        'venta_team/ultimas-ventas/<id_user>/<user_team>',
+        views.SaleListView.as_view(),
+        name='team-list',
+    ),
+    path(
+        'venta_team/delete/<pk>/',
+        views.SaleDeleteView.as_view(),
+        name='team-delete_team',
+    ),
+]

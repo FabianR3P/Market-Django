@@ -1,0 +1,134 @@
+{% extends "baseBoost.html" %}
+
+{% load  static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop"><img src="{% static 'img/ionicons/grid-outline.svg' %} " alt="Bootstrap" width="32" height="32"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Bienvenido: {{ user.full_name }} </a>
+              </li>
+            </ul>
+              <a href="{% url 'users_app:user-logout' %}" style="text-decoration:none; color:black;"><span for="">Salir </span>
+              <img src="{% static 'img/ionicons/exit-outline.svg' %}" alt="Bootstrap" width="32" height="32" style="">
+              </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+        <div class="offcanvas-header">
+          <img src="{% static 'img/maupan.png' %} " alt="MauPan" width="48" height="48">
+          <h5 class="offcanvas-title" id="staticBackdropLabel">Menú</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="offcanvas-body">
+          <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="{% url 'home_app:index' %}" class="nav-link align-middle px-0">
+                            <img src="{% static 'img/ionicons/home-outline.svg' %}" alt="Bootstrap" width="32" height="32" style=""><span class="ms-1 d-none d-sm-inline">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'venta_app:venta-index' user.id '0' %}" class="nav-link align-middle px-0">
+                            <img src="{% static 'img/iconsB/cart4.svg' %}" alt="Bootstrap" width="32" height="32" style=""><span class="ms-1 d-none d-sm-inline">Vender</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <img src="{% static 'img/ionicons/storefront-outline.svg' %}" alt="Bootstrap" width="32" height="32" style=""> <span class="ms-1 d-none d-sm-inline">Almacén</span>
+                         </a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{% url 'producto_app:producto-lista' %}" class="nav-link px-0">
+                                  <span class="d-none d-sm-inline">Productos</span>
+                                   <img src="{% static 'img/ionicons/home-outline.svg' %}" alt="Product" width="20" height="20" style="">
+                                </a>
+                            </li>
+                            <li class="w-100 {% if request.resolver_match.url_name == 'producto-filtros' %}activeli{% endif %}">
+                                <a href="{% url 'producto_app:producto-filtros' %}" class="nav-link px-0">
+                                  <span class="d-none d-sm-inline">Reportes</span>
+                                  <img src="{% static 'img/ionicons/stats-chart-outline.svg' %}" alt="Report" width="20" height="20" style="">
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <img src="{% static 'img/ionicons/cube-outline.svg' %}" alt="Bootstrap" width="32" height="32" style=""> <span class="ms-1 d-none d-sm-inline">Pedidos</span></a>
+                    </li>
+                    <li>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                            <img src="{% static 'img/ionicons/bag-handle-outline.svg' %}" alt="Bootstrap" width="32" height="32" style=""> <span class="ms-1 d-none d-sm-inline">Ventas</span></a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{% url 'venta_app:venta-index' user.id '0' %}" class="nav-link px-0"> <span class="d-none d-sm-inline">Panel de Ventas
+                                  <img src="{% static 'img/ionicons/options-outline.svg' %}" alt="Report" width="20" height="20" style="">
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="{% url 'caja_app:caja-index' user.id %}" class="nav-link px-0"> <span class="d-none d-sm-inline">Cerrar Caja
+                                  <img src="{% static 'img/ionicons/lock-closed-outline.svg' %}" alt="Report" width="20" height="20" style="">
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'caja_app:caja-index-all' %}" class="nav-link px-0"> <span class="d-none d-sm-inline">Cerrar todas las cajas
+                                  <img src="{% static 'img/ionicons/lock-closed.svg' %}" alt="Report" width="20" height="20" style="">
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle">
+                              <img src="{% static 'img/ionicons/person-add-outline.svg' %}" alt="Bootstrap" width="32" height="32" style="">  <span class="ms-1 d-none d-sm-inline">Usuarios</span> </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <img src="{% static 'img/ionicons/bag-handle-outline.svg' %}" alt="Bootstrap" width="32" height="32" style="">  <span class="ms-1 d-none d-sm-inline">Clientes</span> </a>
+                    </li>
+                    <li>
+                        <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                              <img src="{% static 'img/ionicons/timer-outline.svg' %}" alt="Bootstrap" width="32" height="32" style=""> <span class="ms-1 d-none d-sm-inline">Administración</span> </a>
+                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{% url 'orders_app:orders-produccion' %}" class="nav-link px-0"> <span class="d-none d-sm-inline">Producción </span> 1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col">
+      {% block panel-content %}
+      {% endblock panel-content %}
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock content %}

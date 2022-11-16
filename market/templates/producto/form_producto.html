@@ -1,0 +1,197 @@
+{% extends "producto/base_producto.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+<link rel="stylesheet" href="{% static 'css/fontawesome-free-5.15.3-web/css/all.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/teclado.css' %}">
+<script src="{% static 'js/teclado.js' %}"></script>
+
+<div class="grid-x grid-margin-x align-center">
+  <h3 class="cell" style="margin-bottom: 1em; text-align: center;">Datos de Producto</h3>
+  <form class="cell medium-9 grid-x grid-margin-x form1" method="POST" autocomplete="off">{% csrf_token %}
+
+    <div class="cell medium-6">
+      <label>Codigo de barras:</label>
+      <div class="input-group">
+        <span class="input-group-label"><i class="fi-align-justify"></i></span>
+        {{ form.barcode }}
+      </div>
+      {% for error in form.barcode.errors %}
+        <p class="cell" style="color: red;">
+          {{ error|escape }}
+        </p>
+      {% endfor %}
+    </div>
+    <div class="cell medium-6">
+      <label>Nombre:</label>
+      <div class="input-group">
+        <span class="input-group-label"><i class="fi-book"></i></span>
+        {{form.name}}
+      </div>
+    </div>
+
+    <div class="cell medium-6">
+      <label>Proveedor:</label>
+      <div class="input-group">
+        {{form.provider}}
+      </div>
+    </div>
+    <div class="cell medium-6">
+      <label>Marca:</label>
+      <div class="input-group">
+        {{form.marca}}
+      </div>
+    </div>
+
+    <div class="cell medium-6">
+        <label>Unidad de Medida:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-price-tag"></i></span>
+          {{ form.unit }}
+        </div>
+      </div>
+    <div class="cell medium-6">
+      <label>Fecha de Vencimiento:</label>
+      <div class="input-group">
+        <span class="input-group-label"><i class="fi-calendar"></i></span>
+        {{ form.due_date }}
+      </div>
+    </div>
+
+    <div class="cell medium-6">
+        <label>Precio Compra:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.purchase_price}}
+        </div>
+        {% for error in form.purchase_price.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+    <div class="cell medium-6">
+        <label>Precio Venta:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.sale_price}}
+        </div>
+        {% for error in form.sale_price.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+    <div class="cell medium-6">
+        <label>Precio Venta 1:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.sale_price1}}
+        </div>
+        {% for error in form.sale_price1.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+    <div class="cell medium-6">
+        <label>Precio Venta 2:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.sale_price2}}
+        </div>
+        {% for error in form.sale_price2.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+    <div class="cell medium-6">
+        <label>Precio Venta3:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.sale_price3}}
+        </div>
+        {% for error in form.sale_price3.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+    <div class="cell medium-6">
+        <label>Precio Venta 4:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.sale_price4}}
+        </div>
+        {% for error in form.sale_price4.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+    <div class="cell medium-6">
+        <label>Precio Pan frío:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-dollar"></i></span>
+          {{form.sale_last}}
+        </div>
+        {% for error in form.sale_last.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+    </div>
+
+
+    <div class="cell medium-4">
+      <label>Cantidad en Almacen:</label>
+      <div class="input-group">
+        <span class="input-group-label"><i class="fi-list-number"></i></span>
+        {{form.count}}
+      </div>
+    </div>
+    <div class="cell medium-4">
+      <label>% de ganancia:</label>
+      <div class="input-group">
+        <span class="input-group-label"><i class="fi-list-number"></i></span>
+        {{form.percent}}
+      </div>
+    </div>
+
+
+    <div class="cell small-1">
+      <div class="switch large">
+        <input class="switch-input" id="yes-no" type="checkbox" name="exampleSwitch" onclick="location.reload()">
+        <label class="switch-paddle" for="yes-no">
+          <span class="switch-inactive" aria-hidden="false" onclick="yesboton();">Off</span>
+          <span class="switch-active" aria-hidden="false" onclick="noboton();">On</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="cell medium-12">
+        <label>Descripcion del producto:</label>
+        <div class="input-group">
+          {{form.description}}
+        </div>
+      </div>
+
+
+    <div class="cell medium-6">
+      <button class="success button guardar" style="width: 200px;">Guardar</button>
+      {% if product %}
+      <a href="{% url 'producto_app:producto-delete' product.id %}" class="alert button clear">Eliminar</a>
+      {% endif %}
+    </div>
+  </form>
+  <div class="cell" style="height: 300px;">
+
+  </div>
+</div>
+
+<script src="{% static 'js/almacen.js' %}"></script>
+
+{% endblock panel-content %}

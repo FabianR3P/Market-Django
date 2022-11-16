@@ -1,0 +1,782 @@
+{% extends "venta/base_venta.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+
+<link rel="stylesheet" href="{% static 'css/teclado.css' %}">
+<link rel="stylesheet" href="{% static 'css/fontawesome-free-5.15.3-web/css/all.css' %}">
+<div class="grid-x" style="background-color:#F7BBE5">
+  <div class="grid-x grid-margin-x">
+    <!-- contendor de la lista de productos en venta -->
+    <div class="cell medium-8">
+      <form class="cell small-5 input-group" method="POST" name="formulario1">{% csrf_token %}
+        <span class="input-group-label">COD/CAN:</span>
+        {{ form.barcode }}
+        {{ form.count }}
+        {{ form.price }}
+      </form>
+      <h5 class="cell" style="text-align: center;">Cuenta pendiente por pagar de: <b> {{user_t.full_name}}</b> </h5>
+      <scroll-container>
+
+      <table class="hover">
+        <thead>
+          <th width="100">COD</th>
+          <th width="200">Nombres</th>
+          <th width="100">Apunto</th>
+          <th width="120">Precio (S/)</th>
+          <th width="100">Cantidad</th>
+          <th width="150">Fecha</th>
+          <th width="50">Eliminar</th>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr>
+              <td>{{ producto.barcode }}</td>
+              <td>{{ producto.product.name }}</td>
+              <td>{{ producto.user.full_name }}</td>
+              {% if producto.price == 1 %}
+                <td>{{ producto.product.sale_price }}</td>
+                {% elif producto.price == 5  %}
+                  <td>{{ producto.product.sale_price1 }}</td>
+              {% elif producto.price == 2  %}
+                <td>{{ producto.product.sale_price2 }}</td>
+                {% elif producto.price == 3  %}
+                  <td>{{ producto.product.sale_price3 }}</td>
+                  {% elif producto.price == 4  %}
+                    <td>{{ producto.product.sale_price4 }}</td>
+              {% endif %}
+
+              <td>{{ producto.count }}</td>
+              <!--Botones de panel-->
+              <td>
+                  {{ producto.created}}
+              </td>
+
+              <td>
+                {% if user.ocupation == '0' %}
+                  <form action="{% url 'team_app:carshop-delete-team' producto.id user.id car_num user_team %}" method="POST">{% csrf_token %}
+                    <button type="submit" class="button alert" style="width:3em; height:3em;"><i class="fi-x"></i></button>
+                  </form>
+                {% else %}
+                  <form action="{% url 'team_app:carshop-delete-team' producto.id user.id car_num user_team %}" method="POST">{% csrf_token %}
+                    <button type="submit" class="button alert" style="width:3em; height:3em;" disabled><i class="fi-x"></i></button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      </scroll-container>
+    </div>
+
+    <!-- contiene los resultados resltantes -->
+    <div class="cell small-4">
+      <div class="callout success" style="text-align: center; height:6em">
+        <h6>Total a Cobrar:</h6>
+        <h3> S/ {{ total_cobrar }} </h3>
+      </div>
+      {% if user.ocupation == '0' %}
+
+      <form class="cell" action="{% url 'team_app:team-simple' user.id car_num user_team %}" method="POST">{% csrf_token %}
+        <button type="submit" class="cell button primery" style="padding: 1.5em;  height:5.5em;">
+          <i class="fi-credit-card"></i>
+          <span>Pagar Todo</span>
+        </button>
+      </form>
+      {% else %}
+      <form class="cell" action="{% url 'team_app:team-simple' user.id car_num user_team %}" method="POST">{% csrf_token %}
+        <button type="submit" class="cell button primery" style="padding: 1.5em;  height:5.5em;" disabled>
+          <i class="fi-credit-card"></i>
+          <span>Pagar Todo</span>
+        </button>
+      </form>
+      {% endif %}
+
+
+
+      <!--<button data-open="exampleModal1" class="cell button success" style="padding: 1.5em;">
+        <i class="fi-print"></i>
+          <span>Cobrar e Imprimir</span>
+      </button>-->
+
+
+
+      <div >
+        <div class="cell">
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">1</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">2</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">3</button>
+          <button type="button" name="data-delete" class="button alert " style="font-size: 23px; width: 24%; height: 2.5em;">C</button>
+        </div>
+
+        <div class="cell">
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">4</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">5</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">6</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">.</button>
+
+        </div>
+        <div class="cell">
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">7</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">8</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">9</button>
+          <button type="button" name="data-number" class="button" style="font-size: 23px; width: 24%; height: 2.5em;">0</button>
+        </div>
+        <div class="cell">
+          <button type="button" class="button botonenviar" name="button-send" style="font-size: 15px; width: 30em;  height: 4em;">Agregar</button>
+        </div>
+        <form class="cell" action="" method="POST">{% csrf_token %}
+          <button type="submit" class="cell button hollow button alert">
+            <i class="credit-card"></i>
+            <span>Crédito</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+  <div class="cell">
+
+  <button type="button" class="button success" name="boton-product" style="font-size: 15px; width: 16%; height: 40px;" data-open="reveal_modal">Bebidas</button>
+  <button type="button" class="button success" name="boton-product" style="font-size: 15px; width: 16%; height: 40px;" data-open="reveal_modal1AB">Abarrotes</button>
+  <button type="button" class="button " name="boton-product" style="font-size: 15px; width: 16%; height: 40px;" data-open="reveal_modalTemporada">Pan de Temporada</button>
+  <button type="button" class="button success" name="boton-product" style="font-size: 15px; width: 16%; height: 40px;" data-open="reveal_modal" disabled>Más</button>
+  <button type="button" class="button success" name="boton-product" style="font-size: 15px; width: 16%; height: 40px;" data-open="reveal_modal" disabled>Más</button>
+  <a class=" button secondary" href="{% url 'team_app:team-list' user.id user_team %}" style=" width: 16%; height: 40px;">
+         <i class="fi-trash"></i>
+         <span>Ultimas Ventas</span>
+  </a>
+  </div>
+  <!--FILA 1-->
+  <div class="cell small-12" style="margin-bottom:5px">
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="02-1" style="white-space: normal;">
+        Bolillo
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="02-2" style="font-size: 21px;">Mayoreo $1.40</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="02-3" style="font-size: 21px;">Mayoreo $1.60</button></li>
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="01-1" style="">
+        Telera
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="01-2" style="font-size: 21px;">Mayoreo $1.50</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="01-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="25-1" style="">
+        Telera c/ ajonjoli
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="25-2" style="font-size: 21px;">Mayoreo $2.00</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="25-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="07-1" style="">
+        Migajón
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="07-2" style="font-size: 21px;">Mayoreo $4.50</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="07-3" style="font-size: 21px;">Mayoreo $4.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="07-4" style="font-size: 21px;">Mayoreo $5.50</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="07-5" style="font-size: 21px;">Mayoreo $5.00</button></li>
+
+
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="10-1" style="">
+        Reposteria
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="10-2" style="font-size: 21px;">Mayoreo $5.20</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="10-3" style="font-size: 21px;">Mayoreo $6.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="10-4" style="font-size: 21px;">Mayoreo $5.50</button></li>
+
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="13-1" style="">
+        Mostrador
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="13-2" style="font-size: 21px;">Mayoreo $6.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="13-3" style="font-size: 21px;">Mayoreo $6.50</button></li>
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="16-1" style="">
+        Variedad
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="16-2" style="font-size: 21px;">Mayoreo $8.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="16-3" style="font-size: 21px;">Mayoreo $7.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="16-4" style="font-size: 21px;">Mayoreo $7.50</button></li>
+
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="26-1" style="">
+        Español
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="26-2" style="font-size: 21px;">Mayoreo $4.00</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="26-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+  </div>
+  <!--FIN FILA 1-->
+
+  <!--FILA 2-->
+  <div class="cell small-12" style="margin-bottom:5px">
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="19-1" style="">
+        Pambazo
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="19-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="19-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="09-1" style="">
+        Cuadro frutal
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="warning dropdown-item" name="boton-product" value="09-2" style="font-size: 21px;">Mayoreo $8.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="09-3" style="font-size: 21px;">Mayoreo 2</button></li>
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="17-1" style="">
+        Bolinachos
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="warning dropdown-item" name="boton-product" value="17-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="17-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="12-1" style="">
+        Rebanada de pastel
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="12-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="12-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="15-1" style="">
+        Rollitos de Jamón
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="15-2" style="font-size: 21px;">Mayoreo</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="15-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="37-1" style="">
+        Multi
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="37-2" style="font-size: 21px;">Mayoreo $8.00</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="37-3" style="font-size: 21px;">Mayoreo $8.50</button></li>
+      </ul>
+    </div>
+  </div>
+  <!--FIN FILA 2-->
+
+  <!--FILA 3-->
+  <div class="cell small-12" style="margin-bottom:5px">
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="28-1" style="">
+        Mini Pastel
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="28-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="28-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="14-1" style="">
+        Carlotas
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="14-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="14-3" style="font-size: 21px;">Mayoreo 2</button></li>
+      </ul>
+    </div>
+
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="03-1" style="">
+        Baguette
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="03-2" style="font-size: 21px;">Mayoreo $5.50</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="03-3" style="font-size: 21px;">Mayoreo $5.00</button></li>
+      </ul>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="29-1" style="">
+        Mini bolillo
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="29-2" style="font-size: 21px;">Mayoreo $1.10</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="29-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="33-1" style="">
+        Telera 2 tantos
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="warning dropdown-item" name="boton-product" value="33-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="33-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="30-1" style="">
+        Pan de elote
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="30-2" style="font-size: 21px;">Mayoreo 1</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="30-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="34-1" style="">
+        Panque de mantequilla
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="34-2" style="font-size: 21px;">Mayoreo $13</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="34-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+
+  </div>
+  <!--FIN FILA 3-->
+
+  <!--FILA 4-->
+ <div class="cell small-12" style="margin-bottom:5px">
+
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="27-1" style="">
+        Bolillo artesanal o ajonjoli
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="27-2" style="font-size: 21px;">Mayoreo $1.50</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="27-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="31-1" style="">
+        Telera y Bolillo Tanto y medio
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="31-2" style="font-size: 21px;">Mayoreo $3.50</button></li>
+        <li><button type="button" class="dropdown-item" name="boton-product" value="31-3" style="font-size: 21px;">Mayoreo $3.00</button></li>
+      </ul>
+    </div>
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="05-1" style="">
+        Bolillo integral
+      </button>
+      <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+        <span class="visually-hidden">Toggle Dropright</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><button type="button" class="dropdown-item" name="boton-product" value="05-2" style="font-size: 21px;">Mayoreo $2.00</button></li>
+        <!--<li><button type="button" class="dropdown-item" name="boton-product" value="05-3" style="font-size: 21px;">Mayoreo 2</button></li>-->
+      </ul>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-outline-dark btn-lg" name="boton-product" value="E1-1" style="">
+        Efectivo <i class="fi-dollar"></i>
+      </button>
+    </div>
+    <!-- Split dropend button -->
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-outline-dark btn-lg" name="boton-product" value="24-1" style="">
+        Efectivo Pape
+      </button>
+
+    </div>
+    <!-- Split dropend button -->
+		      <div class="btn-group dropend">
+            <a type="button" class="btn btn-outline-danger btn-lg" href="{% url 'venta_app:venta-index' id=user.id car_num='0' %}" name="" >
+              Ventas
+            </a>
+          </div>
+          <br>
+        </div>
+      <br>
+      <div class="cell small-1">
+        <div class="switch large">
+          <input class="switch-input" id="yes-no" type="checkbox" name="exampleSwitch" onclick="location.reload()">
+          <label class="switch-paddle" for="yes-no">
+            <span class="switch-inactive" aria-hidden="false" onclick="yesboton();">Off</span>
+            <span class="switch-active" aria-hidden="false" onclick="noboton();">On</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+	   <!-- Inicia modal ABARPTES 1-->
+     <div class = "large reveal" id = "reveal_modal" data-reveal>
+        <h2>Bebidas</h2>
+        <button type="button" class="button secondary" name="boton-productAb" value="B01" style="font-size: 17px; width: 10%; height: 60px;" data-close>Refresco 600 ml</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B02" style="font-size: 17px; width: 10%; height: 60px;" data-close>Refresco 2lt RedCola</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B03" style="font-size: 17px; width: 10%; height: 60px;" data-close>Refresco 3lt</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B04" style="font-size: 17px; width: 10%; height: 60px;" data-close>Jarrito 600ml</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB20" style="font-size: 17px; width: 10%; height: 60px;" data-close>CocaCola 600ml</button>
+
+        <button type="button" class="button secondary" name="boton-productAb" value="B05" style="font-size: 17px; width: 10%; height: 60px;" data-close>NutriLeche 1 Lt</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B06" style="font-size: 17px; width: 10%; height: 60px;" data-close>NutriLeche 2 Lt</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B07" style="font-size: 17px; width: 10%; height: 60px;"data-close>NutriFresca 1.8Lt</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B08" style="font-size: 17px; width: 10%; height: 60px;"data-close>Lala 1lt</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B09" style="font-size: 17px; width: 10%; height: 60px;"data-close>Lala 1.8Lt</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B12" style="font-size: 16px; width: 10%; height: 60px;"data-close>Lala Galoncito1/4</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB11" style="font-size: 16px; width: 10%; height: 60px;"data-close>Lala deslactosada</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB12" style="font-size: 16px; width: 10%; height: 60px;"data-close>Leche boreal</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB13" style="font-size: 16px; width: 10%; height: 60px;"data-close>Alpura sabor 250ml</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB14" style="font-size: 16px; width: 10%; height: 60px;"data-close>Alpura sabor 1lt</button>
+
+        <button type="button" class="button secondary" name="boton-productAb" value="B10" style="font-size: 17px; width: 10%; height: 60px;"data-close>Nutri Bolsa</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B11" style="font-size: 17px; width: 10%; height: 60px;"data-close>Sabrole Bolsa</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B13" style="font-size: 17px; width: 10%; height: 60px;"data-close>Break</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B14" style="font-size: 17px; width: 10%; height: 60px;"data-close>YogurtLala</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B15" style="font-size: 17px; width: 10%; height: 60px;"data-close>Yakult</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B16" style="font-size: 15px; width: 10%; height: 60px;"data-close>Agua Bonafont 1.5Lt</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B17" style="font-size: 16px; width: 10%; height: 60px;"data-close>Agua Skarch1.5Lt</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B18" style="font-size: 16px; width: 10%; height: 60px;"data-close>Volt</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B19" style="font-size: 16px; width: 10%; height: 60px;"data-close>Agua Skarch Sabor 1.5L</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B20" style="font-size: 16px; width: 10%; height: 60px;"data-close>Boing 1lt</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B21" style="font-size: 16px; width: 10%; height: 60px;"data-close>Agua Bonafont 600ml</button>        <button type="button" class="button secondary " name="boton-productAb" value="B19" style="font-size: 16px; width: 10%; height: 60px;"data-close>Agua Skarch Sabor 1.5Lt</button>
+
+        <button type="button" class="button secondary " name="boton-productAb" value="B28" style="font-size: 16px; width: 10%; height: 60px;"data-close>RedCola 600ml</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="AB15" style="font-size: 16px; width: 10%; height: 60px;"data-close>Gatorade</button>
+
+        <button type="button" class="button secondary " name="boton-productAb" value="B29" style="font-size: 16px; width: 10%; height: 60px;"data-close>Victoria</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B30" style="font-size: 16px; width: 10%; height: 60px;"data-close>Indio</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B31" style="font-size: 16px; width: 10%; height: 60px;"data-close>Viñas</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B32" style="font-size: 16px; width: 10%; height: 60px;"data-close>Suero</button>
+        <button type="button" class="button secondary " name="boton-productAb" value="B33" style="font-size: 16px; width: 10%; height: 60px;"data-close>Jarrito 2lt</button>
+
+        <br>
+        <a class = "button" data-toggle = "reveal_modal1">Más</a>
+
+        <button class = "close-button" data-close aria-label = "Close reveal" type = "button">
+           <span aria-hidden = "true">×</span>
+        </button>
+     </div>
+     <!-- Inicia modal ABARROTES 2-->
+     <div class = "large reveal" id = "reveal_modal1AB" data-reveal>
+        <h2>Abarrotes</h2>
+        <button type="button" class="button secondary" name="boton-productAb" value="TE01" style="font-size: 17px; width: 10%; height: 60px;" data-close>Té sobre</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB01" style="font-size: 17px; width: 10%; height: 60px;" data-close>Chocolate Abuelita</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="B34" style="font-size: 17px; width: 10%; height: 60px;" data-close>Chocomilk</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB02" style="font-size: 17px; width: 10%; height: 60px;" data-close>Café Legal</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB03" style="font-size: 15px; width: 10%; height: 60px;" data-close>Café Legal Canela</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB04" style="font-size: 15px; width: 10%; height: 60px;" data-close>Nescafe sobre chico</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB05" style="font-size: 15px; width: 10%; height: 60px;" data-close>Nescafe sobre grande</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB06" style="font-size: 15px; width: 10%; height: 60px;"data-close>Nescafe frasco chico</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB07" style="font-size: 17px; width: 10%; height: 60px;"data-close>Maizena</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB17" style="font-size: 17px; width: 10%; height: 60px;"data-close>Pan molido Ch</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB18" style="font-size: 17px; width: 10%; height: 60px;"data-close>Pan molido Gr</button>
+
+        <button type="button" class="button secondary" name="boton-productAb" value="AB08" style="font-size: 17px; width: 10%; height: 60px;"data-close>Canela en Raja</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB09" style="font-size: 17px; width: 10%; height: 60px;"data-close>Bolsa papas</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB10" style="font-size: 17px; width: 10%; height: 60px;"data-close>Bolsa chetos</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB21" style="font-size: 17px; width: 10%; height: 60px;"data-close>Palomitos</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB22" style="font-size: 17px; width: 10%; height: 60px;"data-close>CoffeMate</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB23" style="font-size: 17px; width: 10%; height: 60px;"data-close>Maruchan</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB16" style="font-size: 17px; width: 10%; height: 60px;"data-close>Velas</button>
+        <button type="button" class="button secondary" name="boton-productAb" value="AB24" style="font-size: 17px; width: 10%; height: 60px;"data-close>Costales</button>
+
+
+        <br>
+        <a class = "button" data-toggle = "reveal_modal1">Más</a>
+
+        <button class = "close-button" data-close aria-label = "Close reveal" type = "button">
+           <span aria-hidden = "true">×</span>
+        </button>
+     </div>
+     <!-- PAN DE TEMPORADA-->
+
+     <div class = "large reveal" id = "reveal_modalTemporada" data-reveal>
+        <h2>Pan de Temporada</h2>
+        <div class="btn-group dropend">
+          <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="35-1" style="" data-close>
+            Bagetin
+          </button>
+          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+            <span class="visually-hidden">Toggle Dropright</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><button type="button" class="dropdown-item" name="boton-product" value="35-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+            <li><button type="button" class="dropdown-item" name="boton-product" value="35-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+          </ul>
+        </div>
+        <div class="btn-group dropend">
+          <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="35-1" style="" data-close>
+            Baguette X2
+          </button>
+          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+            <span class="visually-hidden">Toggle Dropright</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><button type="button" class="dropdown-item" name="boton-product" value="35-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+            <li><button type="button" class="dropdown-item" name="boton-product" value="35-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+          </ul>
+        </div>
+        <div class="btn-group dropend">
+          <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+            Pan de yema
+          </button>
+          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+            <span class="visually-hidden">Toggle Dropright</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+            <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+          </ul>
+        </div>
+        <div class="btn-group dropend">
+            <button type="button"  class="btn btn-warning btn-lg" data-toggle = "reveal_modal1">Pan de muerto</button>
+          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-spli" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+          </button>
+        </div>
+        <div class = "reveal" id = "reveal_modal1" data-reveal>
+           <h2>Pan de Muerto</h2>
+           <div class="btn-group dropend">
+             <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+               Pan de muerto CH
+             </button>
+             <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+               <span class="visually-hidden">Toggle Dropright</span>
+             </button>
+             <ul class="dropdown-menu">
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+             </ul>
+           </div>
+           <div class="btn-group dropend">
+             <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+               Pan de muerto M
+             </button>
+             <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+               <span class="visually-hidden">Toggle Dropright</span>
+             </button>
+             <ul class="dropdown-menu">
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+             </ul>
+           </div>
+           <br><br>
+           <div class="btn-group dropend">
+             <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+               Pan de muerto G
+             </button>
+             <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+               <span class="visually-hidden">Toggle Dropright</span>
+             </button>
+             <ul class="dropdown-menu">
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+             </ul>
+           </div>
+           <div class="btn-group dropend">
+             <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+               Pan de muerto F
+             </button>
+             <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+               <span class="visually-hidden">Toggle Dropright</span>
+             </button>
+             <ul class="dropdown-menu">
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+             </ul>
+           </div>           <button class = "close-button" data-close aria-label = "Close reveal" type = "button">
+              <span aria-hidden = "true">×</span>
+           </button>
+        </div>
+
+        <div class="btn-group dropend">
+            <button type="button"  class="btn btn-warning btn-lg" data-toggle = "reveal_modal1">Roscas</button>
+          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+          </button>
+        </div>
+        <!--Rosacas-->
+        <div class = "reveal" id = "reveal_modal1" data-reveal>
+           <h2>Roscas</h2>
+           <div class="btn-group dropend">
+             <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+               Rosca M
+             </button>
+             <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+               <span class="visually-hidden">Toggle Dropright</span>
+             </button>
+             <ul class="dropdown-menu">
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+             </ul>
+           </div>
+           <div class="btn-group dropend">
+             <button type="button" class="btn btn-warning btn-lg" name="boton-product" value="36-1" style="" data-close>
+               Rosca G
+             </button>
+             <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" style="width: 2.5em;">
+               <span class="visually-hidden">Toggle Dropright</span>
+             </button>
+             <ul class="dropdown-menu">
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-2" style="font-size: 21px;" data-close>Mayoreo 1</button></li>
+               <li><button type="button" class="dropdown-item" name="boton-product" value="36-3" style="font-size: 21px;" data-close>Mayoreo 2</button></li>
+             </ul>
+           </div>
+           <button class = "close-button" data-close aria-label = "Close reveal" type = "button">
+              <span aria-hidden = "true">×</span>
+           </button>
+        </div>
+        <br>
+        <button class = "close-button" data-close aria-label = "Close reveal" type = "button">
+           <span aria-hidden = "true">×</span>
+        </button>
+        <br><br>
+        <a class = "button" data-toggle = "reveal_modal1">Más</a>
+
+        <button class="close-button" data-close aria-label = "Close reveal" type = "button">
+           <span aria-hidden = "true">×</span>
+        </button>
+     </div>
+
+
+     <div class = "reveal" id = "reveal_modal1" data-reveal>
+        <h2>This is another menu!!!</h2>
+        <p>Revisar más productos.</p>
+        <button class = "close-button" data-close aria-label = "Close reveal" type = "button">
+           <span aria-hidden = "true">×</span>
+        </button>
+     </div>
+  <!-- modal para el cobrar con comprobante de pago -->
+  <div class="reveal" id="exampleModal1" data-reveal>
+    <h3>Detalle del comprobante de pago</h3>
+    <form action="{% url 'team_app:team-voucher' %}" class="grid-x grid-margin-x"
+      method="POST">{% csrf_token %}
+      <div class="cell medium-6">
+        <label>Tipo de Pago:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-credit-card"></i></span>
+          {{ form_voucher.type_payment }}
+        </div>
+        {% for error in form.type_payment.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+      </div>
+      <div class="cell medium-6">
+        <label>Tipo de Comprobante:</label>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fi-archive"></i></span>
+          {{ form_voucher.type_invoce }}
+        </div>
+        {% for error in form.type_invoce.errors %}
+          <p class="cell" style="color: red;">
+            {{ error|escape }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="cell success button">Pagar</button>
+    </form>
+  </div>
+
+<script src="{% static 'js/teclado.js' %}"></script>
+<script src="{% static 'js/productos.js' %}"></script>
+
+
+
+{% endblock panel-content %}

@@ -1,0 +1,198 @@
+{% extends "orders/base_order.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+
+  <div class="row justify-content-center" style="padding-top:1em;">
+    <div class="col-10">
+      <div class="card text-center">
+
+        <div class="card-header">
+          <img src="../../../static/img/maupan.png" alt="MauPan" width="48" height="48">
+          {% for pedido in pedido_detail %}
+          Ticket de Pedido # {{ pedido.id }}
+
+        </div>
+        <div class="card-body">
+          <h5 class="card-title text-center">Detalles del pedido a entregar: </h5>
+          <div class="container">
+            <div class="row">
+              <div class="col-6 text-center">
+                <p><b>Creación de pedido:</b></p>
+              </div>
+              <div class="col-6 text-center">
+                <p>{{ pedido.created }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 text-center">
+                <p><b>Cajero: </b></p>
+              </div>
+              <div class="col-2 text-center">
+                <p>{{ pedido.user.full_name }}</p>
+              </div>
+              <div class="col-1 text-center">
+                <p><b>Cliente:</b> </p>
+              </div>
+              <div class="col-2 text-cente">
+                <p>{{ pedido.client.nickname }}</p>
+              </div>
+              <div class="col-2 text-center bg-success"  style="--bs-bg-opacity: .2;">
+                <p><b>Fecha Entrega: </b></p>
+              </div>
+              <div class="col-4 text-center bg-success"  style="--bs-bg-opacity: .2;">
+                <p>{{ pedido.date_order }}</p>
+              </div>
+            </div>
+            <div class="row bg-success"  style="--bs-bg-opacity: .2;">
+              <div class="col-2 text-center">
+                <p><b>Total: </b></p>
+              </div>
+              <div class="col-2 text-center">
+                <p>$ {{ pedido.amount }}</p>
+              </div>
+              <div class="col-2 text-center">
+                <p><b>A cuenta: </b></p>
+              </div>
+              <div class="col-2 text-center">
+                <p>$ {{ pedido.pay_ammount }}</p>
+              </div>
+              <div class="col-2 text-center">
+                <p><b>Por cobrar: </b></p>
+              </div>
+              <div class="col-2 text-center">
+                <p>$ {{ pedido.pend_ammount }}</p>
+              </div>
+            </div>
+            <div class="row">
+
+            </div>
+            {% endfor %}
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Subtotal</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for producto in productos %}
+                  <tr>
+                    <td>{{ producto.product.name}}</td>
+                    <td>{{ producto.count}}</td>
+                    <td>{{ producto.price_sale}}</td>
+                    <td>{{ producto.sub_total | floatformat:2 }}</td>
+                  </tr>
+                  {% endfor %}
+                  <tr>
+                    {% for venta in venta_detail %}
+                    <td></td>
+                    <td colspan="2" style=""><b>Total: </b></td>
+                    <td>{{ venta.amount }}</td>
+                    {% endfor %}
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+
+          </div>
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Entregar</button>
+          <a href="{% url 'orders_app:orders-list' %}" class="btn btn-dark">Regresar a pedidos</a>
+        </div>
+        <div class="card-footer text-muted">
+          Panaderías MauPan
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="input-group"  method="POST">{% csrf_token %}
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Entregar Pedido</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% for pedido in pedido_detail %}
+
+          <div class="input-group mb-3 bg-success"  style="--bs-bg-opacity: .2;">
+            <span class="input-group-text">Dinero a cuenta: $ </span>
+            <input type="text" class="form-control" value="{{ pedido.amount }}" disabled>
+            <span class="input-group-text">.00</span>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Total a cobrar: $ </span>
+            <input type="text" class="form-control" value="{{ pedido.pend_ammount }}" disabled>
+            <span class="input-group-text">.00</span>
+          </div>
+          {% endfor %}
+            <div class="input-group mb-3">
+              <span class="input-group-text">$</span>
+              {{ form.pay }}
+              <span class="input-group-text">.00</span>
+            </div>
+          <div class="row justify-content-center text-center">
+            <div class="col-2 d-flex flex-column  text-center"">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">1</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">2</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">3</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-danger" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">C</button>
+            </div>
+          </div>
+          <div class="row justify-content-center text-center" style="margin-top:1em;">
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">4</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">5</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">6</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">.</button>
+            </div>
+          </div>
+          <div class="row justify-content-center text-center" style="margin-top:1em;">
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">7</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">8</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">9</button>
+            </div>
+            <div class="col-2">
+              <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">0</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Entregar</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+ <script src="{% static 'js/orders_end.js' %}"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+{% endblock panel-content %}

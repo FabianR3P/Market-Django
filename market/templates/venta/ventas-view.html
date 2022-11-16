@@ -1,0 +1,95 @@
+{% extends "venta/base_ventaB.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+<div class="row justify-content-center" style="padding-top:4em;">
+  <div class="col-6">
+    <div class="card text-center">
+
+      <div class="card-header">
+        <img src="../../../static/img/maupan.png" alt="MauPan" width="48" height="48">
+        {% for venta in venta_detail %}
+        Ticket de venta # {{ venta.id }}
+
+      </div>
+      <div class="card-body">
+        <h5 class="card-title text-center">Detalles de la venta</h5>
+        <div class="container">
+          <div class="row">
+            <div class="col-6 text-center">
+              <p>Hora de la venta: </p>
+            </div>
+            <div class="col-6 text-center">
+              <p>{{ venta.created }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 text-center">
+              <p>Cajero: </p>
+            </div>
+            <div class="col-6 text-center">
+              <p>{{ venta.user.full_name }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 text-center">
+              <p>Total de la venta: </p>
+            </div>
+            <div class="col-6 text-center">
+              <p>{{ venta.amount }}</p>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="row">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Subtotal</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for producto in productos %}
+                <tr>
+                  <td>{{ producto.product.name}}</td>
+                  <td>{{ producto.count}}</td>
+                  <td>{{ producto.price_sale}}</td>
+                  <td>{{ producto.sub_total | floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  {% for venta in venta_detail %}
+                  <td></td>
+                  <td colspan="2" style=""><b>Total: </b></td>
+                  <td>{{ venta.amount }}</td>
+                  {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+
+        </div>
+        <a href="{% url 'venta_app:venta-index' id=user.id car_num='0' %}" class="btn btn-dark">Regresar a vender</a>
+      </div>
+
+      <div class="card-footer text-muted">
+        Panaderías MauPan
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+{% endblock panel-content %}
+
+{% block js %}
+
+{% endblock js %}

@@ -1,0 +1,2 @@
+
+{"token": "5768298048:AAFyjsbxKprBNpSw_VldOM8BxOuEMzNMU0Q","group": "-692188688","channel":"-1001701133589", "namebot": "AVA"}

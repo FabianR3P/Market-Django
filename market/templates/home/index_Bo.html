@@ -1,0 +1,52 @@
+{% extends "home/base_homeB.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+
+<div class="container">
+  <div class="row" style="padding-top:1em">
+    <div class="col-sm-12 col-md-12 text-center">
+      <h1>Bienvenido: <span class="badge bg-success">{{user.full_name}}</span></h1>
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <div class="col-sm-12 col-md-6 text-center">
+      {% if user.ocupation == '0' %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example" style="height:5rem; width:100%;  margin-bottom:2.5rem;">
+        <a href="{% url 'producto_app:reporte-general'%}" ><button type="button" class="btn btn-outline-primary">Cierre del día</button></a>
+        <a href="" ><button type="button" class="btn btn-outline-primary">Reporte para produccion</button></a>
+        <a href="{% url 'orders_app:orders-produccion' %}" ><button type="button" class="btn btn-outline-primary">Dato para la producción</button></a>
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic outlined example" style="height:5rem;">
+        <a href="{% url 'orders_app:orders-list'%}" ><button type="button" class="btn btn-outline-danger">Pedidos para el  día</button></a>
+        <a href="{% url 'producto_app:reporte-general'%}" ><button type="button" class="btn btn-outline-danger">Dinero a cuenta</button></a>
+        <a href="{% url 'producto_app:reporte-general'%}" ><button type="button" class="btn btn-outline-danger">Dinero por cobrar</button></a>
+      </div>
+      {% endif %}
+      <div class="btn-group" role="group" aria-label="Basic outlined example" style="height:5rem; margin-top:2.5rem; margin-bottom:2.5rem;">
+        <a href="{% url 'venta_app:venta-index' id=user.id car_num='0' %}"><button type="button" class="btn btn-outline-success">Panel ventas</button></a>
+        <a href="{% url 'producto_app:producto-lista'%}" ><button type="button" class="btn btn-outline-success">Agregar productos</button></a>
+        <a href="{% url 'producto_app:reporte-general'%}" ><button type="button" class="btn btn-outline-success">Más informacion</button></a>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6 text-center">
+      <div class="card" style="width: 100%">
+        <img src="{% static 'img/pan.jpg' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Control de ventas y produccion</h5>
+          <p class="card-text">Sistema de MauPan para ventas y Administración.</p>
+          <a href="" class="btn btn-primary">Más</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{% endblock panel-content %}
+
+{% block js %}
+
+{% endblock js %}

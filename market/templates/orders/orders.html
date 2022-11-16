@@ -1,0 +1,182 @@
+{% extends "orders/base_order.html" %}
+
+{% load  static %}
+
+{% block panel-content %}
+
+<div class="row">
+  <div class="col-sm-3 col-md-12 d-flex justify-content-center">
+    {% for datos in datos_cliente %}
+      <h3>Nuevo pedido para: {{  datos.nickname  }} </h3>
+    {% endfor %}
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-sm-3 col-md-9">
+    <div class="row">
+      {% for productos in productos_cliente %}
+      <div class="col-sm-1 col-md-2" style="padding-top:10px; ">
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-primary" name="boton-product" type="button" value="{{ productos.product.barcode }}" style="height:4em">{{ productos.product.name }}</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <div class="row">
+        <div class="col-sm-3 col-md-12 d-flex justify-content-center">
+          <h4>Detalles del pan</h4>
+        </div>
+      </div>
+
+      {% for sub in subproductos %}
+      <div class="col-sm-1 col-md-2" style="padding-top:10px; padding-bottom: 10px;">
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-dark" name="boton-type" type="button" value="{{ sub.name }}" style="height:4em">{{ sub.name }}</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-sm-2 col-md-3">
+    <div class="d-grid gap-2">
+      <h3 class="btn btn-outline-primary" style="font-size:40px;">Total: <b>$ {{ total_cobrar|floatformat:2 }}</b></h3>
+    </div>
+
+  </div>
+</div>
+<div class="row align-items-center">
+  <div class="col-sm-12 col-md-4">
+    <div class="row p-1">
+      <div class="col-12 text-center" style="">
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_1" style="font-size: 2.5rem; width:4.5rem;">1</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_2" style="font-size: 2.5rem; width:4.5rem;">2</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_3" style="font-size: 2.5rem; width:4.5rem;">3</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-delete" class="btn btn-danger" id="btn_C" style="font-size: 2.5rem; width:4.5rem;">C</button>
+        </div>
+      </div>
+    </div>
+    <div class="row p-1">
+      <div class="col-12 text-center">
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_4" style="font-size: 2.5rem; width:4.5rem;">4</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_5" style="font-size: 2.5rem; width:4.5rem;">5</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_6" style="font-size: 2.5rem; width:4.5rem;">6</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_p" style="font-size: 2.5rem; width:4.5rem;">.</button>
+        </div>
+      </div>
+    </div>
+    <div class="row p-1">
+      <div class="col-12 text-center">
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_7" style="font-size: 2.5rem; width:4.5rem;">7</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_8" style="font-size: 2.5rem; width:4.5rem;">8</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_9" style="font-size: 2.5rem; width:4.5rem;">9</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" name="data-number" class="btn btn-primary" id="btn_0" style="font-size: 2.5rem; width:4.5rem;">0</button>
+        </div>
+      </div>
+    </div>
+    <div class="row p-1">
+      <div class="col-12 text-center">
+        <button type="button" class="btn btn-primary" onclick="mandarDatosOrder()" name="button-send" style="font-size: 2.5rem; width:19rem; height:4.5rem;">Agregar</button>
+      </div>
+    </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <form class="input-group" method="POST" name="formularioOrder">{% csrf_token %}
+
+          <span class="input-group-text">COD</span>
+
+          {{ form.barcode }}
+          {{ form.count }}
+          {{ form.comen }}
+
+
+      </form>
+      <table class="table table-borderless table-responsive">
+        <thead>
+          <tr>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Comentario</th>
+            <th scope="col">Quitar</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for producto in productos_car %}
+          <tr>
+            <td>{{ producto.count }}</td>
+            <td>{{ producto.product.product.name }}</td>
+            <td>{{ producto.price|floatformat:2 }}</td>
+            <td>{{ producto.sub_total|floatformat:2}}</td>
+            <td>{{ producto.comen }}</td>
+
+            <td>
+              {% for datos in datos_cliente %}
+              <form action="{% url 'orders_app:carshopOrder-delete' producto.id  datos.id %}" method="POST">{% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="">  <img src="../../../static/img/ionicons/close-circle-outline.svg" class="card-img-top" alt="..."  width="25" height="25" style="filter: invert(1);"></button>
+              </form>
+              {% endfor %}
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-12 col-md-2 ">
+      <div class="d-grid gap-2" style="">
+        {% for datos in datos_cliente %}
+        <!-- Button trigger modal -->
+        {% for datos in datos_cliente %}
+          <a type="button" class="btn btn-success" href="{% url 'orders_app:orders-generate' datos.id %}">
+            Gererar Pedido
+            <img src="../../../static/img/ionicons/book-outline.svg" class="card-img-top" alt="..."  width="25" height="25" style="filter: invert(1);">
+          </a>
+        {% endfor %}
+
+        {% endfor %}
+        <form class="cell" action="{% url 'orders_app:carshopOrder-delete_all' user.id %}" method="POST">{% csrf_token %}
+          <button class="btn btn-danger" type="button" style="font-size: 1.2rem; height:5rem; width:100%;">
+            <span>Eliminar Todo</span>
+            <img src="../../../static/img/ionicons/trash-outline.svg" class="card-img-top" alt="..."  width="25" height="25" style="filter: invert(1);">
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="modal fade" id="edicion" role="dialog">
+    </div>
+</div>
+<!-- Modal -->
+
+<script src="{% static 'js/orders.js' %}"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+{% endblock panel-content %}
+
+{% block js %}
+
+{% endblock js %}

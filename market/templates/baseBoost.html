@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="icon" type="image/png" href="{% static 'img/maupan.png' %}" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/bootstrap5.2/css/bootstrap.min.css' %}">
+  <!-- CSS only -->
+  <title>{% block title %}{% endblock title %}</title>
+  {% block css %}{% endblock css %}
+</head>
+<body>
+
+  {% block content %}
+  {% endblock content %}
+
+  {% block js %}
+
+  {% endblock js %}
+</body>
+<script src="{% static 'js/vendor/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap5.2/js/bootstrapV2.min.js' %}"></script>
+<script src="{% static 'js/bootstrap5.2/js/bootstrap.bundle.min.js' %}"></script>
+<!-- JavaScript Bundle with Popper -->
+</html>

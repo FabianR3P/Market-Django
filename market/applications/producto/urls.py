@@ -1,0 +1,73 @@
+#
+from django.urls import path
+from . import views
+
+app_name = "producto_app"
+
+urlpatterns = [
+    path(
+        'producto/lista/',
+        views.ProductListView.as_view(),
+        name='producto-lista',
+    ),
+    path(
+        'producto/agregar/',
+        views.ProductCreateView.as_view(),
+        name='producto-add',
+    ),
+    path(
+        'producto/agregar/<pk>/',
+        views.ProductUpdateView.as_view(),
+        name='producto-update',
+    ),
+    path(
+        'producto/add/<id_product>/<id_user>/',
+        views.AddProductView.as_view(),
+        name='producto-add',
+    ),
+    path(
+        'producto/eliminar/<pk>/',
+        views.ProductDeleteView.as_view(),
+        name='producto-delete',
+    ),
+    path(
+        'producto/detalle/<pk>/',
+        views.ProductDetailView.as_view(),
+        name='producto-detail',
+    ),
+    path(
+        'producto/detalle/print/<pk>/',
+        views.ProductDetailViewPdf.as_view(),
+        name='producto-detail_print',
+    ),
+    path(
+        'producto/report/',
+        views.ReportProduct.as_view(),
+        name='producto-report',
+    ),
+    path(
+        'producto/reportList/',
+        views.FiltrosProductListView.as_view(),
+        name='producto-filtros',
+    ),
+    path(
+        'producto/report-day/',
+        views.ReportListView.as_view(),
+        name='reporte-general',
+    ),
+    path(
+        'producto/report-day-delete/<pk>/',
+        views.ReportListDeleteView.as_view(),
+        name='reporte-general-delete',
+    ),
+        path(
+        'producto/reporte-produccion/',
+        views.ReportProduccionView.as_view(),
+        name='reporte-produccion',
+    ),
+    path(
+        'producto/reporte-produccion-detail/',
+        views.ReportProduccionDetailView.as_view(),
+        name='reporte-produccion-detail',
+    ),
+]

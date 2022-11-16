@@ -1,0 +1,408 @@
+{% extends "producto/base_productoB.html" %}
+{% load  static %}
+{% block panel-content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<div class="container">
+
+  <div class="row" style="padding-top:1em">
+    <div class="col-sm-12 col-md-12 text-center">
+      <h4>La produccion de hoy ingresada es: </h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2 text-center">
+    </div>
+    <div class="col-sm-12 col-md-5 text-center">
+      <div class="alert alert-warning" role="alert">
+        Entrada
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-5 text-center">
+      <div class="alert alert-danger" role="alert">
+        Baja
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Migajón: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_migajon }}%; font-size:20px;" aria-valuenow="{{ migajon }}" aria-valuemin="0" aria-valuemax="2000">{{ migajon|floatformat:0 }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{migajon|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_migajon_b }}%; font-size:20px;" aria-valuenow="{{ migajon_b }}" aria-valuemin="0" aria-valuemax="700">{{ migajon_b|floatformat:0 }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{ migajon_b|floatformat:0 }} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Repostería:</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_reposteria }}%; font-size:20px;" aria-valuenow="{{ reposteria|floatformat:0 }}" aria-valuemin="0" aria-valuemax="2000">{{ reposteria|floatformat:0 }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{reposteria|floatformat:0}} pzas</p>
+    </div>
+
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_reposteria_b }}%; font-size:20px;" aria-valuenow="{{ reposteria_b }}" aria-valuemin="0" aria-valuemax="700">{{ reposteria_b|floatformat:0 }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{reposteria_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Mostrador: <p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_mostrador }}%; font-size:20px;" aria-valuenow="{{ mostrador }}" aria-valuemin="0" aria-valuemax="40000">{{ mostrador }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{mostrador|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_mostrador_b }}%; font-size:20px;" aria-valuenow="{{ mostrador_b }}" aria-valuemin="0" aria-valuemax="1500">{{ mostrador_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{mostrador|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Variedad:</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_variedad }}%; font-size:20px;" aria-valuenow="{{ variedad }}" aria-valuemin="0" aria-valuemax="40000">{{ variedad }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{variedad|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_variedad_b }}%; font-size:20px;" aria-valuenow="{{ variedad_b }}" aria-valuemin="0" aria-valuemax="1500">{{ variedad_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{variedad|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Peineta: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_peineta }}%; font-size:20px;" aria-valuenow="{{ peineta }}" aria-valuemin="0" aria-valuemax="40000">{{ peineta }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{peineta|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_peineta_b }}%; font-size:20px;" aria-valuenow="{{ peineta_b }}" aria-valuemin="0" aria-valuemax="1500">{{ peineta_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{peineta_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Bolillo: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ porcentaje }}%; font-size:20px;" aria-valuenow="{{ Bolillo }}" aria-valuemin="0" aria-valuemax="20000">{{ Bolillo }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{Bolillo|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ porcentaje_b }}%; font-size:20px;" aria-valuenow="{{ Bolillo_b }}" aria-valuemin="0" aria-valuemax="1500">{{ Bolillo_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{Bolillo_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Telera: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_Telera }}%; font-size:20px;" aria-valuenow="{{ Telera }}" aria-valuemin="0" aria-valuemax="2000">{{ Telera }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{Telera|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_Telera_b }}%; font-size:20px;" aria-valuenow="{{ Telera_b }}" aria-valuemin="0" aria-valuemax="1500">{{ Telera_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{Telera_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Bolillo artesanal: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_bolillo_artesanal }}%; font-size:20px;" aria-valuenow="{{ bolillo_artesanal }}" aria-valuemin="0" aria-valuemax="40000">{{ bolillo_artesanal }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{bolillo_artesanal|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_bolillo_artesanal_b }}%; font-size:20px;" aria-valuenow="{{ bolillo_artesanal_b }}" aria-valuemin="0" aria-valuemax="1500">{{ bolillo_artesanal_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{bolillo_artesanal_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Bolillo integral: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_bolillo_integral }}%; font-size:20px;" aria-valuenow="{{ bolillo_integral }}" aria-valuemin="0" aria-valuemax="40000">{{ bolillo_integral }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{bolillo_integral|floatformat:0}} pzas</p>
+    </div>
+
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_bolillo_integral_b }}%; font-size:20px;" aria-valuenow="{{ bolillo_integral_b }}" aria-valuemin="0" aria-valuemax="1500">{{ bolillo_integral_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{bolillo_integral_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Bolillo con ajonjoli: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_bolillo_ajonjoli }}%; font-size:20px;" aria-valuenow="{{ bolillo_ajonjoli }}" aria-valuemin="0" aria-valuemax="40000">{{ bolillo_ajonjoli }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{bolillo_ajonjoli|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_bolillo_ajonjoli_b }}%; font-size:20px;" aria-valuenow="{{ bolillo_ajonjoli_b }}" aria-valuemin="0" aria-valuemax="1500">{{ bolillo_ajonjoli_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{bolillo_integral_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Telera c/ ajonjoli: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_telera_ajonjoli }}%; font-size:20px;" aria-valuenow="{{ telera_ajonjoli }}" aria-valuemin="0" aria-valuemax="40000">{{ telera_ajonjoli }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{telera_ajonjoli|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_telera_ajonjoli_b }}%; font-size:20px;" aria-valuenow="{{ telera_ajonjoli_b }}" aria-valuemin="0" aria-valuemax="1500">{{ telera_ajonjoli_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{telera_ajonjoli_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Pan español: </p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_español }}%; font-size:20px;" aria-valuenow="{{ español }}" aria-valuemin="0" aria-valuemax="40000">{{ español }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{español|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_español_b }}%; font-size:20px;" aria-valuenow="{{ Bolillo_b }}" aria-valuemin="0" aria-valuemax="1500">{{ español_b }} pzas</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{por_español_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Baguette:</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_baguette }}%; font-size:20px;" aria-valuenow="{{ baguette }}" aria-valuemin="0" aria-valuemax="40000">{{ baguette }} pzas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{baguette|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_baguette_b }}%; font-size:20px;" aria-valuenow="{{ baguette_b }}" aria-valuemin="0" aria-valuemax="1500">{{ baguette_b }} bolillos</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{baguette_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Mini bolillo:</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_mini_bolillo }}%; font-size:20px;" aria-valuenow="{{ mini_bolillo }}" aria-valuemin="0" aria-valuemax="40000">{{ mini_bolillo }} bolillos</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{mini_bolillo|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_mini_bolillo_b }}%; font-size:20px;" aria-valuenow="{{ mini_bolillo_b }}" aria-valuemin="0" aria-valuemax="1500">{{ mini_bolillo_b }} bolillos</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{mini_bolillo_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 text-center" >
+      <div class="alert alert-warning" role="alert">
+        Pan de temporada.
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Pan de muerto:</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: {{ por_pan_muerto }}%; font-size:20px;" aria-valuenow="{{ pan_muerto }}" aria-valuemin="0" aria-valuemax="40000">{{ pan_muerto }} bolillos</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{pan_muerto|floatformat:0}} pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: {{ por_pan_muerto_b }}%; font-size:20px;" aria-valuenow="{{ pan_muerto_b }}" aria-valuemin="0" aria-valuemax="1500">{{ pan_muerto_b }} bolillos</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;">{{pan_muerto_b|floatformat:0}} pzas</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-2">
+      <p>Por asignar .....</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <a href="{% url 'producto_app:reporte-produccion-detail'%}" style="text-decoration: none;">
+        <div class="progress" style="height:30px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-label="Basic example" style="width: 100%; font-size:20px;" aria-valuenow="" aria-valuemin="0" aria-valuemax="40000">Por asignar</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;"> pzas</p>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="progress" style="height:30px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-label="Basic example" style="width: 100%; font-size:20px;" aria-valuenow="" aria-valuemin="0" aria-valuemax="1500">Por asignar</div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-1">
+      <p style="font-size:15px;"> pzas</p>
+    </div>
+  </div>
+</div>
+
+<script src=""></script>
+
+{% endblock panel-content %}
